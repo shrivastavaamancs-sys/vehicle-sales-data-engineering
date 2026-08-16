@@ -1,0 +1,5 @@
+price_category,total_sales,average_selling_price,average_mmr,average_price_difference,average_price_difference_percentage,average_odometer,average_vehicle_condition,minimum_selling_price,maximum_selling_price
+Budget,97728,2568.63,3105.49,-536.86,-6.2,139642.36,20.34,1,4975
+Mid Range,249652,10310.03,10510.35,-200.32,0.1,65210.53,31.18,5000,14975
+Premium,170896,20473.34,20448.14,25.21,0.82,36964.14,34.87,15000,29900
+Luxury,30124,39285.89,38931.43,354.46,1.76,26534.57,36.09,30000,230000

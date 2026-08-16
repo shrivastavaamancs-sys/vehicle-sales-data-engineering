@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+airflow_venv/
+
+# Airflow
+logs/
+airflow/logs/
+airflow/*.db
+airflow/*.sqlite
+
+# Spark
+spark-temp/
+
+# Temporary files
+*.tmp
+*.log
+
+# Archives
+*.zip
+
+# Secrets
+.env
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+archive (2)/
