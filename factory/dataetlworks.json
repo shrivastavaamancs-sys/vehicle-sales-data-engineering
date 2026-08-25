@@ -1,0 +1,15 @@
+{
+	"name": "dataetlworks",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "430ef46b-56d5-4b2e-a312-a5bb7786d728",
+		"tenantId": "5f67ef6f-cc47-48b7-907e-09cb17e8a282"
+	}
+}
