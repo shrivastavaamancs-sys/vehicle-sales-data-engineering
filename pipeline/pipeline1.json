@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ecom_data_copy",
+				"name": "ecommerence",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -34,7 +34,7 @@
 						"formatSettings": {
 							"type": "DelimitedTextWriteSettings",
 							"quoteAllText": true,
-							"fileExtension": ".csv"
+							"fileExtension": ".txt"
 						}
 					},
 					"enableStaging": false,
@@ -49,13 +49,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DelimitedText8",
+						"referenceName": "DelimitedText1",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DelimitedText9",
+						"referenceName": "DelimitedText2",
 						"type": "DatasetReference"
 					}
 				]
