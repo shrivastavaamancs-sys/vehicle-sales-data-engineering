@@ -81,7 +81,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "dataflow1",
+						"referenceName": "transform_sales_silver1",
 						"type": "DataFlowReference"
 					},
 					"compute": {

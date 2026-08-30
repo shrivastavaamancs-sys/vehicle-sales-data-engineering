@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "transform_sales_silver1",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
