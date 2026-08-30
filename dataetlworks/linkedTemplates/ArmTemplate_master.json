@@ -31,6 +31,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedService4'"
 		},
+		"linkedService5_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'linkedService5'"
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://ganeshdata.dfs.core.windows.net/"
@@ -79,6 +83,9 @@
 					},
 					"linkedService4_connectionString": {
 						"value": "[parameters('linkedService4_connectionString')]"
+					},
+					"linkedService5_connectionString": {
+						"value": "[parameters('linkedService5_connectionString')]"
 					},
 					"AzureDataLakeStorage1_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]"
