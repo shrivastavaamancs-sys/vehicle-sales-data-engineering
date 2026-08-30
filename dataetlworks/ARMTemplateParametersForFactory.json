@@ -11,6 +11,18 @@
 		"AzureDataLakeStorage1_accountKey": {
 			"value": ""
 		},
+		"linkedService1_connectionString": {
+			"value": ""
+		},
+		"linkedService2_connectionString": {
+			"value": ""
+		},
+		"linkedService3_connectionString": {
+			"value": ""
+		},
+		"linkedService4_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://ganeshdata.dfs.core.windows.net/"
 		}
