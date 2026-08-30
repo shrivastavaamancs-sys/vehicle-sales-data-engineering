@@ -1,0 +1,85 @@
+{
+	"name": "Parquet3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "sample-superset",
+				"fileSystem": "silver"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": [
+			{
+				"name": "Order_ID",
+				"type": "INT32"
+			},
+			{
+				"name": "Order_Date",
+				"type": "INT96"
+			},
+			{
+				"name": "Ship_Date",
+				"type": "DATE"
+			},
+			{
+				"name": "Customer_ID",
+				"type": "INT32"
+			},
+			{
+				"name": "Customer_Name",
+				"type": "UTF8"
+			},
+			{
+				"name": "segment",
+				"type": "UTF8"
+			},
+			{
+				"name": "country",
+				"type": "UTF8"
+			},
+			{
+				"name": "city",
+				"type": "UTF8"
+			},
+			{
+				"name": "state",
+				"type": "UTF8"
+			},
+			{
+				"name": "region",
+				"type": "UTF8"
+			},
+			{
+				"name": "category",
+				"type": "UTF8"
+			},
+			{
+				"name": "sales",
+				"type": "UTF8"
+			},
+			{
+				"name": "profit",
+				"type": "INT32"
+			},
+			{
+				"name": "Sales",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			},
+			{
+				"name": "Profit",
+				"type": "DECIMAL",
+				"precision": 10,
+				"scale": 2
+			}
+		]
+	}
+}
