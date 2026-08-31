@@ -26,6 +26,9 @@
 		"linkedService5_connectionString": {
 			"value": ""
 		},
+		"linkedService6_connectionString": {
+			"value": ""
+		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
 			"value": "https://ganeshdata.dfs.core.windows.net/"
 		},
