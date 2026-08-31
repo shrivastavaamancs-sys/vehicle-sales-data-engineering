@@ -13,6 +13,382 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Parquet2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "sample-superset",
+						"fileSystem": "silver"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet3')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "sample-superset",
+						"fileSystem": "silver"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": [
+					{
+						"name": "Order_ID",
+						"type": "INT32"
+					},
+					{
+						"name": "Order_Date",
+						"type": "INT96"
+					},
+					{
+						"name": "Ship_Date",
+						"type": "DATE"
+					},
+					{
+						"name": "Customer_ID",
+						"type": "INT32"
+					},
+					{
+						"name": "Customer_Name",
+						"type": "UTF8"
+					},
+					{
+						"name": "segment",
+						"type": "UTF8"
+					},
+					{
+						"name": "country",
+						"type": "UTF8"
+					},
+					{
+						"name": "city",
+						"type": "UTF8"
+					},
+					{
+						"name": "state",
+						"type": "UTF8"
+					},
+					{
+						"name": "region",
+						"type": "UTF8"
+					},
+					{
+						"name": "category",
+						"type": "UTF8"
+					},
+					{
+						"name": "sales",
+						"type": "UTF8"
+					},
+					{
+						"name": "profit",
+						"type": "INT32"
+					},
+					{
+						"name": "Sales",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 2
+					},
+					{
+						"name": "Profit",
+						"type": "DECIMAL",
+						"precision": 10,
+						"scale": 2
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Parquet4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage4",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "superset",
+						"fileSystem": "gold"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/silver_to_gold')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Parquet3",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Parquet4",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "aggregate1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Order_ID as integer,",
+						"          Order_Date as timestamp,",
+						"          Ship_Date as date,",
+						"          Customer_ID as integer,",
+						"          Customer_Name as string,",
+						"          segment as string,",
+						"          country as string,",
+						"          city as string,",
+						"          state as string,",
+						"          region as string,",
+						"          category as string,",
+						"          sales as string,",
+						"          profit as integer,",
+						"          Sales as decimal(10,2),",
+						"          Profit as decimal(10,2)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     format: 'parquet') ~> source1",
+						"source1 aggregate(groupBy(Region = region),",
+						"     profit = sum(source1@profit),",
+						"          Sales = sum(source1@Sales)) ~> aggregate1",
+						"aggregate1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     format: 'parquet',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Parquet3')]",
+				"[concat(variables('factoryId'), '/datasets/Parquet4')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/transform_sales_silver1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText3",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText4",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "aggregate1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          {Order ID} as integer,",
+						"          {Order Date} as string,",
+						"          {Customer Name} as string,",
+						"          Region as string,",
+						"          City as string,",
+						"          Category as string,",
+						"          {Sub-Category} as string,",
+						"          {Product Name} as string,",
+						"          Quantity as string,",
+						"          {Unit Price} as string,",
+						"          Discount as string,",
+						"          Sales as integer,",
+						"          Profit as integer,",
+						"          {Payment Mode} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 aggregate(groupBy(Region,",
+						"          Category),",
+						"     totalsales = sum(Sales),",
+						"          {Total Profit} = sum(Profit),",
+						"          {Total Orders} = count({Order ID})) ~> aggregate1",
+						"aggregate1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          Category as string,",
+						"          Region as string,",
+						"          Total_Sales as string,",
+						"          Total_Profit as string,",
+						"          Total_Orders as string",
+						"     ),",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/transform_sales_silver2')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText6",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText7",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "select1"
+						},
+						{
+							"name": "filter1"
+						},
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          {Row ID} as string,",
+						"          {Order ID} as string,",
+						"          {Order Date} as string,",
+						"          {Ship Date} as string,",
+						"          {Ship Mode} as string,",
+						"          {Customer ID} as string,",
+						"          {Customer Name} as string,",
+						"          Segment as string,",
+						"          Country as string,",
+						"          City as string,",
+						"          State as string,",
+						"          {Postal Code} as string,",
+						"          Region as string,",
+						"          {Product ID} as string,",
+						"          Category as string,",
+						"          {Sub-Category} as string,",
+						"          {Product Name} as string,",
+						"          Sales as string,",
+						"          Quantity as string,",
+						"          Discount as string,",
+						"          Profit as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 select(mapColumn(",
+						"          {Order ID},",
+						"          {Order Date},",
+						"          {Ship Date},",
+						"          {Ship Mode},",
+						"          {Customer ID},",
+						"          {Customer Name},",
+						"          Segment,",
+						"          City,",
+						"          State,",
+						"          Region,",
+						"          {Product ID},",
+						"          Category,",
+						"          Sales,",
+						"          Profit",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> select1",
+						"select1 filter(toDecimal(Sales, 10, 2) > 0 && not(isNull(Sales))) ~> filter1",
+						"filter1 derive(Sales = toDecimal(Sales, 10, 2),",
+						"          {Order Date} = toDate({Order Date}, 'MM/dd/yyyy'),",
+						"          Profit = toDecimal(Profit, 10, 2)) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -121,7 +497,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/transform_sales_silver1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/sample-superset')]",
@@ -165,7 +543,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/transform_sales_silver2')]"
+			]
 		}
 	]
 }

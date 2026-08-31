@@ -15,6 +15,18 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
 		},
+		"AzureDataLakeStorage2_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage2'"
+		},
+		"AzureDataLakeStorage3_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage3'"
+		},
+		"AzureDataLakeStorage4_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage4'"
+		},
 		"linkedService1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'linkedService1'"
@@ -40,6 +52,18 @@
 			"metadata": "Secure string for 'connectionString' of 'linkedService6'"
 		},
 		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://ganeshdata.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage2_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://ganeshdata.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage3_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://ganeshdata.dfs.core.windows.net/"
+		},
+		"AzureDataLakeStorage4_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://ganeshdata.dfs.core.windows.net/"
 		}
@@ -73,6 +97,57 @@
 					"accountKey": {
 						"type": "SecureString",
 						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage2')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage2_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage2_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage3')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage3_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage3_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage4')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage4_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage4_accountKey')]"
 					}
 				}
 			},
@@ -661,6 +736,40 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DelimitedText8')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage3",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "part-00000-37a440b5-6750-472d-a513-fa0eaa9e03ec-c000.snappy.parquet",
+						"folderPath": "sample-superset",
+						"fileSystem": "silver"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "PAR1\u0015\u0004\u0015P\u0015P\u0015����",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage3')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Parquet1')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -683,298 +792,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet2')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "sample-superset",
-						"fileSystem": "silver"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Parquet3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage1",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"folderPath": "sample-superset",
-						"fileSystem": "silver"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": [
-					{
-						"name": "Order_ID",
-						"type": "INT32"
-					},
-					{
-						"name": "Order_Date",
-						"type": "INT96"
-					},
-					{
-						"name": "Ship_Date",
-						"type": "DATE"
-					},
-					{
-						"name": "Customer_ID",
-						"type": "INT32"
-					},
-					{
-						"name": "Customer_Name",
-						"type": "UTF8"
-					},
-					{
-						"name": "segment",
-						"type": "UTF8"
-					},
-					{
-						"name": "country",
-						"type": "UTF8"
-					},
-					{
-						"name": "city",
-						"type": "UTF8"
-					},
-					{
-						"name": "state",
-						"type": "UTF8"
-					},
-					{
-						"name": "region",
-						"type": "UTF8"
-					},
-					{
-						"name": "category",
-						"type": "UTF8"
-					},
-					{
-						"name": "sales",
-						"type": "UTF8"
-					},
-					{
-						"name": "profit",
-						"type": "INT32"
-					},
-					{
-						"name": "Sales",
-						"type": "DECIMAL",
-						"precision": 10,
-						"scale": 2
-					},
-					{
-						"name": "Profit",
-						"type": "DECIMAL",
-						"precision": 10,
-						"scale": 2
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/transform_sales_silver1')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText3",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText4",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "aggregate1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          {Order ID} as integer,",
-						"          {Order Date} as string,",
-						"          {Customer Name} as string,",
-						"          Region as string,",
-						"          City as string,",
-						"          Category as string,",
-						"          {Sub-Category} as string,",
-						"          {Product Name} as string,",
-						"          Quantity as string,",
-						"          {Unit Price} as string,",
-						"          Discount as string,",
-						"          Sales as integer,",
-						"          Profit as integer,",
-						"          {Payment Mode} as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 aggregate(groupBy(Region,",
-						"          Category),",
-						"     totalsales = sum(Sales),",
-						"          {Total Profit} = sum(Profit),",
-						"          {Total Orders} = count({Order ID})) ~> aggregate1",
-						"aggregate1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     input(",
-						"          Category as string,",
-						"          Region as string,",
-						"          Total_Sales as string,",
-						"          Total_Profit as string,",
-						"          Total_Orders as string",
-						"     ),",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText3')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText4')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/transform_sales_silver2')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText6",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText7",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "select1"
-						},
-						{
-							"name": "filter1"
-						},
-						{
-							"name": "derivedColumn1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          {Row ID} as string,",
-						"          {Order ID} as string,",
-						"          {Order Date} as string,",
-						"          {Ship Date} as string,",
-						"          {Ship Mode} as string,",
-						"          {Customer ID} as string,",
-						"          {Customer Name} as string,",
-						"          Segment as string,",
-						"          Country as string,",
-						"          City as string,",
-						"          State as string,",
-						"          {Postal Code} as string,",
-						"          Region as string,",
-						"          {Product ID} as string,",
-						"          Category as string,",
-						"          {Sub-Category} as string,",
-						"          {Product Name} as string,",
-						"          Sales as string,",
-						"          Quantity as string,",
-						"          Discount as string,",
-						"          Profit as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 select(mapColumn(",
-						"          {Order ID},",
-						"          {Order Date},",
-						"          {Ship Date},",
-						"          {Ship Mode},",
-						"          {Customer ID},",
-						"          {Customer Name},",
-						"          Segment,",
-						"          City,",
-						"          State,",
-						"          Region,",
-						"          {Product ID},",
-						"          Category,",
-						"          Sales,",
-						"          Profit",
-						"     ),",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> select1",
-						"select1 filter(toDecimal(Sales, 10, 2) > 0 && not(isNull(Sales))) ~> filter1",
-						"filter1 derive(Sales = toDecimal(Sales, 10, 2),",
-						"          {Order Date} = toDate({Order Date}, 'MM/dd/yyyy'),",
-						"          Profit = toDecimal(Profit, 10, 2)) ~> derivedColumn1",
-						"derivedColumn1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
-					]
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DelimitedText6')]",
-				"[concat(variables('factoryId'), '/datasets/DelimitedText7')]"
 			]
 		}
 	]
