@@ -15,14 +15,10 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Parquet3",
+						"referenceName": "DelimitedText7",
 						"type": "DatasetReference"
 					},
-					"name": "sink1",
-					"rejectedDataLinkedService": {
-						"referenceName": "linkedService5",
-						"type": "LinkedServiceReference"
-					}
+					"name": "sink1"
 				}
 			],
 			"transformations": [
@@ -87,40 +83,11 @@
 				"          Profit = toDecimal(Profit, 10, 2)) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          Order_ID as integer,",
-				"          Order_Date as timestamp,",
-				"          Ship_Date as date,",
-				"          Customer_ID as integer,",
-				"          Customer_Name as string,",
-				"          segment as string,",
-				"          country as string,",
-				"          city as string,",
-				"          state as string,",
-				"          region as string,",
-				"          category as string,",
-				"          sales as string,",
-				"          profit as integer,",
-				"          Sales as decimal(10,2),",
-				"          Profit as decimal(10,2)",
-				"     ),",
-				"     format: 'parquet',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     mapColumn(",
-				"          segment = Segment,",
-				"          city = City,",
-				"          state = State,",
-				"          region = Region,",
-				"          category = Category,",
-				"          profit = Profit,",
-				"          Sales,",
-				"          Profit",
-				"     ),",
-				"     partitionBy('hash', 1)) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
